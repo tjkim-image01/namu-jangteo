@@ -1,0 +1,349 @@
+<!doctype html>
+<!-- 안드로이드 앱(APK) 받기 페이지. tools/deploy_pages.sh 가 {{…}} 자리를 채워 download/index.html 로 올린다.
+     "전중후 시작"~"전중후 끝" 사이는 그 앱의 APK 가 있을 때만 남긴다. -->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#F3EBD7" />
+    <meta name="description" content="나무장터와 전중후 사진대장 안드로이드 앱 받기" />
+    <link rel="icon" href="../favicon.png" type="image/png" />
+    <title>앱 받기 · 나무장터</title>
+    <style>
+      @font-face {
+        font-family: 'Pretendard Variable';
+        font-weight: 45 920;
+        font-display: swap;
+        src: url('../fonts/PretendardVariable.woff2') format('woff2-variations');
+      }
+      :root {
+        --paper: #f3ebd7;
+        --card: #fffdf6;
+        --ink: #1e3b2b;
+        --ink-2: #566555;
+        --line: #d3c6a6;
+        --leaf: #4b9447;
+        --leaf-deep: #2a6b3a;
+        --leaf-tint: #e6efd2;
+        --apricot: #f0934f;
+        --apricot-deep: #c2591b;
+        --apricot-tint: #fce6d2;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      body {
+        min-height: 100vh;
+        padding: calc(18px + env(safe-area-inset-top, 0px)) 16px calc(32px + env(safe-area-inset-bottom, 0px));
+        background: var(--paper);
+        color: var(--ink);
+        font-family: 'Pretendard Variable', -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        letter-spacing: -0.01em;
+        word-break: keep-all;
+        overflow-wrap: anywhere;
+        -webkit-font-smoothing: antialiased;
+      }
+      main {
+        max-width: 460px;
+        margin: 0 auto;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      header img {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 3px rgba(30, 59, 43, 0.22));
+      }
+      header strong {
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+      .hero {
+        position: relative;
+        margin-top: 14px;
+        overflow: hidden;
+        border-radius: 26px;
+        box-shadow: 0 14px 30px -12px rgba(30, 59, 43, 0.35);
+      }
+      .hero img {
+        display: block;
+        width: 100%;
+        height: 190px;
+        object-fit: cover;
+        object-position: 50% 70%;
+      }
+      .hero h1 {
+        position: absolute;
+        inset: auto 0 0 0;
+        padding: 46px 20px 16px;
+        background: linear-gradient(transparent, rgba(22, 44, 30, 0.82));
+        color: #fffdf6;
+        font-size: 25px;
+        font-weight: 800;
+        line-height: 1.25;
+        letter-spacing: -0.035em;
+        text-wrap: balance;
+      }
+      .lead {
+        margin: 16px 4px 0;
+        color: var(--ink-2);
+        font-size: 15px;
+      }
+      .app {
+        display: grid;
+        grid-template-columns: 76px 1fr;
+        gap: 4px 14px;
+        margin-top: 14px;
+        padding: 16px;
+        border-radius: 24px;
+        background: var(--card);
+        box-shadow:
+          inset 0 0 0 1px rgba(30, 59, 43, 0.08),
+          0 10px 26px -10px rgba(30, 59, 43, 0.2);
+      }
+      .app .art {
+        grid-row: span 2;
+        display: grid;
+        place-items: center;
+        width: 76px;
+        height: 76px;
+        border-radius: 20px;
+        background: var(--tint);
+      }
+      .app .art img {
+        width: 64px;
+        height: 64px;
+        object-fit: contain;
+        filter: drop-shadow(0 3px 4px rgba(30, 59, 43, 0.25));
+      }
+      .app h2 {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        font-size: 19px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+      .app h2 small {
+        padding: 2px 9px;
+        border-radius: 10px;
+        background: var(--tint);
+        color: var(--deep);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+      .app p {
+        color: var(--ink-2);
+        font-size: 14px;
+      }
+      .app ul {
+        grid-column: 1 / -1;
+        margin-top: 10px;
+        padding: 0;
+        list-style: none;
+        font-size: 14px;
+      }
+      .app li {
+        position: relative;
+        padding: 3px 0 3px 18px;
+      }
+      .app li::before {
+        content: '';
+        position: absolute;
+        top: 11px;
+        left: 4px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--main);
+      }
+      .get {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 56px;
+        margin-top: 12px;
+        border-radius: 28px;
+        background: var(--deep);
+        box-shadow:
+          inset 0 -4px 0 rgba(0, 0, 0, 0.22),
+          0 8px 16px -8px var(--deep);
+        color: #fff;
+        font-size: 17px;
+        font-weight: 760;
+        text-decoration: none;
+        transition: transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      .get:active {
+        transform: translateY(2px) scale(0.985);
+      }
+      .get span {
+        font-size: 13.5px;
+        font-weight: 600;
+        opacity: 0.82;
+      }
+      .lead b {
+        color: var(--ink);
+      }
+      h2.group {
+        margin: 24px 4px 0;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+      h2.group span {
+        margin-left: 6px;
+        color: var(--ink-2);
+        font-size: 13.5px;
+        font-weight: 550;
+        letter-spacing: -0.01em;
+      }
+      h2.group + .app {
+        margin-top: 10px;
+      }
+      .app .art img.icon {
+        width: 76px;
+        height: 76px;
+        border-radius: 20px;
+        filter: none;
+      }
+      .photo {
+        --main: #4a8a96;
+        --deep: #2c6672;
+        --tint: #dcecee;
+      }
+      .lite {
+        --main: var(--leaf);
+        --deep: var(--leaf-deep);
+        --tint: var(--leaf-tint);
+      }
+      .ai {
+        --main: var(--apricot);
+        --deep: var(--apricot-deep);
+        --tint: var(--apricot-tint);
+      }
+      section.how {
+        margin-top: 22px;
+        padding: 18px;
+        border-radius: 24px;
+        border: 1.5px dashed var(--line);
+      }
+      .how h2 {
+        font-size: 16px;
+        font-weight: 800;
+      }
+      .how ol {
+        margin-top: 8px;
+        padding-left: 20px;
+        color: var(--ink-2);
+        font-size: 14.5px;
+      }
+      .how li {
+        padding: 3px 0;
+      }
+      .how b {
+        color: var(--ink);
+      }
+      footer {
+        margin-top: 20px;
+        text-align: center;
+        color: var(--ink-2);
+        font-size: 13px;
+      }
+      footer a {
+        display: inline-block;
+        margin-bottom: 10px;
+        padding: 10px 18px;
+        border-radius: 20px;
+        background: var(--card);
+        box-shadow: inset 0 0 0 1px var(--line);
+        color: var(--ink);
+        font-size: 14.5px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <img src="../art/logo.webp" alt="" />
+        <strong>나무장터</strong>
+      </header>
+
+      <div class="hero">
+        <img src="../art/hero.webp" alt="" />
+        <h1>안드로이드 앱 받기</h1>
+      </div>
+      <p class="lead">받을 앱의 <b>받기</b>를 누르세요. 여러 개를 한 폰에 함께 깔아도 됩니다.</p>
+
+      <h2 class="group">나무장터 <span>팔 나무와 살 나무를 지도에서 잇기</span></h2>
+
+      <article class="app lite">
+        <div class="art"><img src="../art/tree-pine.webp" alt="" /></div>
+        <h2>나무장터 <small>AI 비포함</small></h2>
+        <p>어느 폰에서나 가볍게 씁니다.</p>
+        <ul>
+          <li>한 줄로 적으면 수종·규격·수량·지역을 채워 줍니다</li>
+          <li>따로 받을 것이 없습니다</li>
+        </ul>
+        <a class="get" href="namu-jangteo.apk?v=202611190719" download="namu-jangteo.apk">받기 <span>13MB</span></a>
+      </article>
+
+      <article class="app ai">
+        <div class="art"><img src="../art/tree-blossom.webp" alt="" /></div>
+        <h2>나무장터 AI <small>AI 포함</small></h2>
+        <p>메모리 8GB 이상인 폰에 맞습니다.</p>
+        <ul>
+          <li>규칙으로 못 읽은 말을 폰 안의 AI가 마저 읽습니다</li>
+          <li>앱 안에서 AI 모델(약 2.6GB)을 한 번 받아야 합니다. Wi-Fi에서 받으세요</li>
+          <li>메모리가 작은 폰에서는 AI가 꺼지고 위 앱과 똑같이 동작합니다</li>
+        </ul>
+        <a class="get" href="namu-jangteo-ai.apk?v=202611190719" download="namu-jangteo-ai.apk">받기 <span>38MB</span></a>
+      </article>
+
+      <!-- 전중후 시작 -->
+      <h2 class="group">전중후 사진대장 <span>현장 사진을 엑셀 대장으로</span></h2>
+
+      <article class="app photo">
+        <div class="art"><img class="icon" src="jeonjunghu.png" alt="" /></div>
+        <h2>전중후 <small>사진대장</small></h2>
+        <p>현장 작업 전·중·후 사진을 정리합니다.</p>
+        <ul>
+          <li>구역마다 작업 전 · 중 · 후 사진을 찍습니다</li>
+          <li>도우미 "나무"가 말로 순서를 이끌어 줍니다</li>
+          <li>사진이 칸에 맞춰 들어간 엑셀 사진대장을 만듭니다</li>
+        </ul>
+        <a class="get" href="jeonjunghu.apk?v=202611190709" download="jeonjunghu.apk">받기 <span>13MB</span></a>
+      </article>
+      <!-- 전중후 끝 -->
+
+      <section class="how">
+        <h2>설치하는 법</h2>
+        <ol>
+          <li><b>받기</b>를 누르고 다 받아질 때까지 기다립니다.</li>
+          <li>알림이나 "내 파일 → 다운로드"에서 받은 파일을 엽니다.</li>
+          <li>"출처를 알 수 없는 앱" 안내가 나오면 <b>설정 → 이 출처 허용</b>을 켭니다.</li>
+          <li><b>설치</b>를 누릅니다. "확인되지 않은 앱" 안내가 나오면 <b>무시하고 설치</b>를 고릅니다.</li>
+        </ol>
+      </section>
+
+      <footer>
+        <a href="../">설치 없이 웹으로 쓰기</a>
+        <p>시험용 앱입니다 · 2026-11-19 만듦</p>
+      </footer>
+    </main>
+  </body>
+</html>
