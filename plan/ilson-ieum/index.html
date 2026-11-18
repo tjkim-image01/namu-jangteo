@@ -390,6 +390,16 @@
         text-decoration: none;
         text-shadow: 0 1.5px 0 #8a4e56;
       }
+      footer a.plain {
+        background: var(--paper);
+        box-shadow: 5px 5px 0 var(--pink);
+        color: var(--ink);
+        text-shadow: none;
+      }
+      footer a {
+        margin-left: 4px;
+        margin-right: 4px;
+      }
       footer a:active {
         transform: translate(4px, 4px);
         box-shadow: 1px 1px 0 #8a4e56;
@@ -424,7 +434,7 @@
       <main>
         <div class="hello">
           <img src="art/mascot-point.webp" alt="도우미 나무" />
-          <p>가까운 현장과 일손을 지도 위에서 이어 주는 앱이에요. 먼저 만들어 본 화면부터 보세요!</p>
+          <p>가까운 현장과 일손을 지도 위에서 이어 주는 앱이에요. 먼저 만들어 본 화면부터 보세요! 맨 아래에서 바로 써 볼 수도 있어요.</p>
         </div>
         <div class="shots">
           <figure><img src="shots/01-intro.webp" alt="첫 화면" width="480" height="1039" loading="lazy" /><figcaption>첫 화면</figcaption></figure>
@@ -1074,7 +1084,8 @@
       </main>
 
       <footer>
-        <a href="../../download/">앱 받기 페이지로</a>
+        <a href="../../ilson-ieum/">웹으로 써 보기</a>
+        <a class="plain" href="../../download/">앱 받기 페이지로</a>
         <p>일손이음 기획서 v0.2 · 2026-11-19</p>
       </footer>
     </div>

@@ -1,13 +1,14 @@
 <!doctype html>
 <!-- 안드로이드 앱(APK) 받기 페이지. tools/deploy_pages.sh 가 {{…}} 자리를 채워 download/index.html 로 올린다.
      "전중후 시작"~"전중후 끝" 사이는 그 앱의 APK 가 있을 때만 남긴다.
-     "일손 시작"~"일손 끝" 사이는 일손이음 기획서 페이지(project-tjkim/03.work-match/result/plan)가 있을 때만 남긴다. -->
+     "일손 시작"~"일손 끝" 사이는 일손이음 기획서 페이지(project-tjkim/03.work-match/result/plan)가 있을 때만 남긴다.
+     "일손웹" 표시가 붙은 줄은 일손이음 웹앱(…/app/dist)이 있을 때만 남긴다. -->
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#F3EBD7" />
-    <meta name="description" content="나무장터와 전중후 사진대장 안드로이드 앱 받기, 일손이음 기획서" />
+    <meta name="description" content="나무장터와 전중후 사진대장 안드로이드 앱 받기, 일손이음 웹앱과 기획서" />
     <link rel="icon" href="../favicon.png" type="image/png" />
     <title>앱 받기 · 나무장터</title>
     <style>
@@ -190,6 +191,13 @@
       .get:active {
         transform: translateY(2px) scale(0.985);
       }
+      .get.plain {
+        height: 50px;
+        margin-top: 10px;
+        background: var(--card);
+        box-shadow: inset 0 0 0 2px var(--deep);
+        color: var(--deep);
+      }
       .get span {
         font-size: 13.5px;
         font-weight: 600;
@@ -341,14 +349,15 @@
 
       <article class="app work">
         <div class="art"><img class="icon" src="ilson-ieum.png" alt="" /></div>
-        <h2>일손이음 <small>기획서</small></h2>
+        <h2>일손이음 <small>시험판</small></h2>
         <p>근처 현장을 찾아 지원하고, 현장은 근처 사람을 찾습니다.</p>
         <ul>
           <li>사람은 고급 · 중급 · 하급 등급이 있습니다</li>
           <li>현장은 등급별 구하는 인원과 단가를 적습니다</li>
-          <li>아직 받을 앱 파일은 없습니다. 기획서와 만들어 본 화면을 먼저 봅니다</li>
+          <li>설치 파일은 아직 없습니다. 지도에 보이는 현장과 일손은 예시입니다</li>
         </ul>
-        <a class="get" href="../plan/ilson-ieum/?v=202611190828">기획서 보기</a>
+        <a class="get" href="../ilson-ieum/?v=202611190839">웹으로 써 보기</a><!-- 일손웹 -->
+        <a class="get plain" href="../plan/ilson-ieum/?v=202611190844">기획서 보기</a>
       </article>
       <!-- 일손 끝 -->
 
