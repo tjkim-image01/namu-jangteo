@@ -1,12 +1,13 @@
 <!doctype html>
 <!-- 안드로이드 앱(APK) 받기 페이지. tools/deploy_pages.sh 가 {{…}} 자리를 채워 download/index.html 로 올린다.
-     "전중후 시작"~"전중후 끝" 사이는 그 앱의 APK 가 있을 때만 남긴다. -->
+     "전중후 시작"~"전중후 끝" 사이는 그 앱의 APK 가 있을 때만 남긴다.
+     "일손 시작"~"일손 끝" 사이는 일손이음 기획서 페이지(project-tjkim/03.work-match/result/plan)가 있을 때만 남긴다. -->
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#F3EBD7" />
-    <meta name="description" content="나무장터와 전중후 사진대장 안드로이드 앱 받기" />
+    <meta name="description" content="나무장터와 전중후 사진대장 안드로이드 앱 받기, 일손이음 기획서" />
     <link rel="icon" href="../favicon.png" type="image/png" />
     <title>앱 받기 · 나무장터</title>
     <style>
@@ -224,6 +225,11 @@
         --deep: #2c6672;
         --tint: #dcecee;
       }
+      .work {
+        --main: #e8737c;
+        --deep: #b5485a;
+        --tint: #fbe0e2;
+      }
       .lite {
         --main: var(--leaf);
         --deep: var(--leaf-deep);
@@ -329,6 +335,22 @@
         <a class="get" href="jeonjunghu.apk?v=202611190709" download="jeonjunghu.apk">받기 <span>13MB</span></a>
       </article>
       <!-- 전중후 끝 -->
+
+      <!-- 일손 시작 -->
+      <h2 class="group">일손이음 <span>가까운 현장과 일손 잇기</span></h2>
+
+      <article class="app work">
+        <div class="art"><img class="icon" src="ilson-ieum.png" alt="" /></div>
+        <h2>일손이음 <small>기획서</small></h2>
+        <p>근처 현장을 찾아 지원하고, 현장은 근처 사람을 찾습니다.</p>
+        <ul>
+          <li>사람은 고급 · 중급 · 하급 등급이 있습니다</li>
+          <li>현장은 등급별 구하는 인원과 단가를 적습니다</li>
+          <li>아직 받을 앱 파일은 없습니다. 기획서와 만들어 본 화면을 먼저 봅니다</li>
+        </ul>
+        <a class="get" href="../plan/ilson-ieum/?v=202611190828">기획서 보기</a>
+      </article>
+      <!-- 일손 끝 -->
 
       <section class="how">
         <h2>설치하는 법</h2>

@@ -1,0 +1,1082 @@
+<!doctype html>
+<!-- tools/build_plan.py 가 00.기획서.md 에서 만든 페이지. 직접 고치지 말고 기획서를 고친 뒤 다시 만든다. -->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#faf9f5" />
+    <meta name="description" content="일손이음 기획서 — 가까운 현장과 일할 사람을 지도 위에서 이어 주는 앱" />
+    <link rel="icon" href="icon-192.png" type="image/png" />
+    <title>일손이음 기획서</title>
+    <style>
+      @font-face {
+        font-family: 'Jua';
+        font-display: swap;
+        src: url('fonts/jua.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Gaegu';
+        font-weight: 700;
+        font-display: swap;
+        src: url('fonts/gaegu.woff2') format('woff2');
+      }
+      :root {
+        --cream: #faf9f5;
+        --paper: #fdfcf9;
+        --ink: #2c2a29;
+        --soft: #6d6765;
+        --faint: #d1d0cc;
+        --pink: #f3d3d4;
+        --coral: #e8737c;
+        --coral-deep: #b5485a;
+        --mustard: #e9a93b;
+        --green: #58a56f;
+        --sky: #cfe6ee;
+        --line: 2.5px;
+        --head: 'Jua', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+        --hand: 'Gaegu', 'Jua', sans-serif;
+        --body: system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 64px;
+      }
+      body {
+        margin: 0;
+        background: #ece8de;
+        color: var(--ink);
+        font-family: var(--body);
+        font-size: 16px;
+        line-height: 1.65;
+        word-break: keep-all;
+        overflow-wrap: anywhere;
+        -webkit-font-smoothing: antialiased;
+      }
+      .page {
+        max-width: 760px;
+        margin: 0 auto;
+        background: var(--cream);
+        box-shadow: 0 0 0 var(--line) var(--ink);
+        min-height: 100vh;
+      }
+
+      /* ── 머리: 제목 글자가 하나씩 튀어나온다 ── */
+      .hero {
+        position: relative;
+        height: min(620px, 150vw);
+        overflow: hidden;
+        text-align: center;
+        border-bottom: var(--line) solid var(--ink);
+      }
+      .hero > img.bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: bottom;
+      }
+      .hero-top {
+        position: relative;
+        padding: calc(34px + env(safe-area-inset-top, 0px)) 16px 0;
+      }
+      .pop-title {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        gap: 4px;
+        font-family: var(--head);
+        font-weight: 400;
+        font-size: min(84px, 20vw);
+        line-height: 1.05;
+      }
+      .pop-title span {
+        display: inline-block;
+        -webkit-text-stroke: 5px var(--ink);
+        paint-order: stroke fill;
+        text-shadow: 0 5px 0 var(--ink);
+        animation: letter-pop 0.55s cubic-bezier(0.34, 1.7, 0.5, 1) both;
+      }
+      @keyframes letter-pop {
+        0% {
+          transform: scale(0) translateY(20px);
+        }
+        60% {
+          transform: scale(1.18) translateY(-6px);
+        }
+        100% {
+          transform: scale(1) translateY(0);
+        }
+      }
+      .hero-sub {
+        margin: 2px 0 10px;
+        font-family: var(--hand);
+        font-weight: 700;
+        font-size: 30px;
+        letter-spacing: -0.05em;
+        color: var(--soft);
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+      }
+      .tags span {
+        padding: 2px 13px;
+        border: var(--line) solid var(--ink);
+        border-radius: 999px;
+        background: var(--paper);
+        box-shadow: 3px 3px 0 var(--pink);
+        font-family: var(--head);
+        font-size: 15px;
+      }
+      .tags span:first-child {
+        background: var(--mustard);
+      }
+
+      /* ── 차례 ── */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        padding: 10px 14px;
+        background: rgba(250, 249, 245, 0.94);
+        border-bottom: var(--line) solid var(--ink);
+      }
+      nav::-webkit-scrollbar {
+        display: none;
+      }
+      nav a {
+        flex: none;
+        padding: 3px 13px;
+        border: 2px solid var(--ink);
+        border-radius: 999px;
+        background: var(--paper);
+        box-shadow: 2px 2px 0 var(--pink);
+        color: var(--ink);
+        font-family: var(--head);
+        font-size: 15px;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      nav a:active {
+        transform: translate(2px, 2px);
+        box-shadow: none;
+      }
+
+      /* ── 도우미 한마디, 화면 캡처 ── */
+      .hello {
+        display: flex;
+        align-items: flex-end;
+        gap: 6px;
+        padding: 22px 16px 0 8px;
+      }
+      .hello img {
+        flex: none;
+        height: 104px;
+        width: auto;
+      }
+      .hello p {
+        position: relative;
+        margin: 0 0 14px;
+        padding: 9px 15px 10px;
+        border: var(--line) solid var(--ink);
+        border-radius: 18px;
+        background: var(--paper);
+        box-shadow: 5px 5px 0 var(--pink);
+        font-family: var(--hand);
+        font-weight: 700;
+        font-size: 21px;
+        line-height: 1.25;
+        letter-spacing: -0.05em;
+      }
+      .shots {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 18px 18px 22px;
+        scrollbar-width: thin;
+      }
+      .shots figure {
+        flex: none;
+        width: min(62vw, 250px);
+        margin: 0;
+        scroll-snap-align: center;
+      }
+      .shots img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: var(--line) solid var(--ink);
+        border-radius: 22px;
+        box-shadow: 6px 6px 0 var(--pink);
+        background: var(--paper);
+      }
+      .shots figcaption {
+        margin-top: 12px;
+        font-family: var(--hand);
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 1.2;
+        letter-spacing: -0.05em;
+        text-align: center;
+      }
+      .swipe {
+        margin: 0;
+        text-align: center;
+        font-size: 13px;
+        color: var(--soft);
+      }
+
+      /* ── 본문 ── */
+      article {
+        padding: 6px 18px 30px;
+      }
+      article h2 {
+        margin: 44px 0 14px;
+        padding: 6px 16px 7px;
+        display: inline-block;
+        border: var(--line) solid var(--ink);
+        border-radius: 16px;
+        background: var(--sky);
+        box-shadow: 5px 5px 0 var(--ink);
+        font-family: var(--head);
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 1.3;
+        rotate: -1deg;
+      }
+      article h2:nth-of-type(3n + 1) {
+        background: #fbefd3;
+      }
+      article h2:nth-of-type(3n + 2) {
+        background: #fbe0e2;
+      }
+      article h2:nth-of-type(3n) {
+        background: #dff0e3;
+      }
+      article h3 {
+        margin: 28px 0 8px;
+        font-family: var(--head);
+        font-weight: 400;
+        font-size: 20px;
+      }
+      article h3::before {
+        content: '';
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 8px;
+        border: 2px solid var(--ink);
+        border-radius: 50%;
+        background: var(--coral);
+      }
+      article p {
+        margin: 10px 0;
+      }
+      article strong {
+        background: linear-gradient(transparent 62%, #fbe3a8 62%);
+      }
+      article ul,
+      article ol {
+        padding-left: 22px;
+      }
+      article li {
+        margin: 4px 0;
+      }
+      article li::marker {
+        color: var(--coral-deep);
+      }
+      article code {
+        padding: 1px 6px;
+        border-radius: 6px;
+        background: #efece4;
+        font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 0.88em;
+      }
+      article pre {
+        margin: 14px 0;
+        padding: 14px;
+        overflow-x: auto;
+        border: var(--line) solid var(--ink);
+        border-radius: 16px;
+        background: var(--paper);
+        box-shadow: 5px 5px 0 var(--pink);
+        font-size: 12.5px;
+        line-height: 1.35;
+      }
+      article pre code {
+        padding: 0;
+        background: none;
+        font-family: 'D2Coding', 'Nanum Gothic Coding', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+        font-size: inherit;
+        white-space: pre;
+      }
+      .table-wrap {
+        margin: 14px 0;
+        overflow-x: auto;
+        border: var(--line) solid var(--ink);
+        border-radius: 16px;
+        background: var(--paper);
+        box-shadow: 5px 5px 0 var(--pink);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14.5px;
+        line-height: 1.5;
+      }
+      th {
+        padding: 8px 10px;
+        background: var(--ink);
+        color: var(--paper);
+        font-family: var(--head);
+        font-weight: 400;
+        font-size: 15px;
+        text-align: left;
+        white-space: nowrap;
+      }
+      td {
+        padding: 8px 10px;
+        border-top: 2px solid #e6e2d8;
+        vertical-align: top;
+        min-width: 64px;
+      }
+      td:first-child {
+        font-weight: 600;
+      }
+      td code {
+        white-space: nowrap;
+      }
+      tbody tr:nth-child(even) td {
+        background: #f7f5ef;
+      }
+      [align='center'] {
+        text-align: center;
+      }
+      [align='right'] {
+        text-align: right;
+      }
+      footer {
+        padding: 26px 18px calc(40px + env(safe-area-inset-bottom, 0px));
+        border-top: var(--line) solid var(--ink);
+        text-align: center;
+        color: var(--soft);
+        font-size: 13.5px;
+      }
+      footer a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 54px;
+        padding: 0 26px;
+        margin-bottom: 14px;
+        border: var(--line) solid var(--ink);
+        border-radius: 16px;
+        background: var(--coral);
+        box-shadow: 5px 5px 0 #8a4e56;
+        color: #fff;
+        font-family: var(--head);
+        font-size: 20px;
+        text-decoration: none;
+        text-shadow: 0 1.5px 0 #8a4e56;
+      }
+      footer a:active {
+        transform: translate(4px, 4px);
+        box-shadow: 1px 1px 0 #8a4e56;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .pop-title span {
+          animation: none;
+        }
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <img class="bg" src="art/hero.webp" alt="" />
+        <div class="hero-top">
+          <h1 class="pop-title" aria-label="일손이음"><span style="color:#e9a93b;animation-delay:0.15s;rotate:-3deg">일</span><span style="color:#e8737c;animation-delay:0.24s;rotate:3deg">손</span><span style="color:#58a56f;animation-delay:0.33s;rotate:-3deg">이</span><span style="color:#7fbcd2;animation-delay:0.42s;rotate:3deg">음</span></h1>
+          <p class="hero-sub">기획서</p>
+          <div class="tags">
+            <span>v0.2</span>
+            <span>2026-11-19</span>
+            <span>1차 구현에 반영됨 (휴대폰 실물 확인 전)</span>
+          </div>
+        </div>
+      </header>
+
+      <nav aria-label="차례"><a href="#s1">한 줄 정의</a><a href="#s2">목표와 성공 기준</a><a href="#s3">사용자</a><a href="#s4">등급</a><a href="#s5">올리는 것</a><a href="#s6">찾기 규칙</a><a href="#s7">지원과 제안</a><a href="#s8">화면 구성</a><a href="#s9">디자인과 움직임 — 전중후 그림풍</a><a href="#s10">자료와 저장</a><a href="#s11">기술 선택</a><a href="#s12">리스크</a><a href="#s13">아직 정하지 않은 것</a><a href="#s14">변경 이력</a></nav>
+
+      <main>
+        <div class="hello">
+          <img src="art/mascot-point.webp" alt="도우미 나무" />
+          <p>가까운 현장과 일손을 지도 위에서 이어 주는 앱이에요. 먼저 만들어 본 화면부터 보세요!</p>
+        </div>
+        <div class="shots">
+          <figure><img src="shots/01-intro.webp" alt="첫 화면" width="480" height="1039" loading="lazy" /><figcaption>첫 화면</figcaption></figure>
+          <figure><img src="shots/02-find-sites.webp" alt="현장 찾기 — 내 둘레의 현장이 가까운 순으로" width="480" height="1039" loading="lazy" /><figcaption>현장 찾기 — 내 둘레의 현장이 가까운 순으로</figcaption></figure>
+          <figure><img src="shots/03-find-workers.webp" alt="사람 찾기 — 등급마다 다른 색 핀" width="480" height="1039" loading="lazy" /><figcaption>사람 찾기 — 등급마다 다른 색 핀</figcaption></figure>
+          <figure><img src="shots/10-worker-form.webp" alt="일손 카드 — 등급 · 직종 · 대략적인 위치" width="480" height="1039" loading="lazy" /><figcaption>일손 카드 — 등급 · 직종 · 대략적인 위치</figcaption></figure>
+          <figure><img src="shots/07-site-form-needs.webp" alt="현장 올리기 — 등급별 인원과 단가" width="480" height="1039" loading="lazy" /><figcaption>현장 올리기 — 등급별 인원과 단가</figcaption></figure>
+          <figure><img src="shots/12-site-detail-worker.webp" alt="현장 상세 — 내 등급 줄과 지원 단추" width="480" height="1039" loading="lazy" /><figcaption>현장 상세 — 내 등급 줄과 지원 단추</figcaption></figure>
+          <figure><img src="shots/13-applied.webp" alt="지원했어요!" width="480" height="1039" loading="lazy" /><figcaption>지원했어요!</figcaption></figure>
+          <figure><img src="shots/15-applicants.webp" alt="현장 쪽 — 지원이 오면 수락 · 거절" width="480" height="1039" loading="lazy" /><figcaption>현장 쪽 — 지원이 오면 수락 · 거절</figcaption></figure>
+          <figure><img src="shots/17-worker-detail-offer.webp" alt="반대로 — 현장이 사람에게 제안" width="480" height="1039" loading="lazy" /><figcaption>반대로 — 현장이 사람에게 제안</figcaption></figure>
+        </div>
+        <p class="swipe">← 옆으로 밀어 보세요 →</p>
+
+        <article>
+<h2 id="s1">1. 한 줄 정의</h2>
+<p><strong>가까운 현장과 일할 사람을 지도 위에서 이어 주는 휴대폰 웹앱.</strong></p>
+<ul>
+<li>일하는 사람은 자기 <strong>대략적인 위치</strong>를 알리고, 근처 <strong>현장</strong>을 찾아 <strong>지원</strong>한다.</li>
+<li>현장은 <strong>등급별로 구하는 인원과 단가</strong>를 적어 올리고, 반대로 근처 <strong>사람</strong>을 찾아 <strong>일을 제안</strong>할 수도 있다.</li>
+</ul>
+<p>원리는 나무장터(<code>project/namu001</code>)와 같다: 지도에 기준점을 두고, 그 둘레의 글을 가까운 순으로 보여 준다.<br>
+그림과 화면은 전중후 사진대장(<code>02.tree-excel</code>)의 손그림풍을 그대로 쓴다.</p>
+<p>앱 이름 "일손이음"은 임시로 붙인 것이다 (13절 D1).</p>
+<h2 id="s2">2. 목표와 성공 기준</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>목표</th>
+<th>성공 기준</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G1</td>
+<td>근처 현장을 찾는다</td>
+<td>기준점(내 위치 또는 지도에서 찍은 곳)과 반경을 정하면 그 안의 현장이 가까운 순으로 지도와 목록에 나온다</td>
+</tr>
+<tr>
+<td>G2</td>
+<td>근처 사람을 찾는다</td>
+<td>같은 화면에서 <code>사람 찾기</code>로 바꾸면 그 둘레의 일손 카드가 가까운 순으로 나온다</td>
+</tr>
+<tr>
+<td>G3</td>
+<td>등급이 있다</td>
+<td>사람은 고급·중급·하급 중 하나. 색·별·메달로 한눈에 구분된다</td>
+</tr>
+<tr>
+<td>G4</td>
+<td>현장은 등급별 인원과 단가를 적는다</td>
+<td>현장 올리기에서 등급 3줄에 <code>구하는 인원</code>과 <code>단가(일당)</code>를 적고, 카드와 상세에 모집표로 보인다</td>
+</tr>
+<tr>
+<td>G5</td>
+<td>지원한다</td>
+<td>사람이 현장 상세에서 <code>지원하기</code> → 현장 주인이 <code>수락</code> → 남은 자리가 줄고 서로 전화번호가 보인다</td>
+</tr>
+<tr>
+<td>G6</td>
+<td>반대로 제안한다</td>
+<td>현장 주인이 사람 상세에서 <code>일 제안하기</code> → 사람이 <code>수락</code></td>
+</tr>
+<tr>
+<td>G7</td>
+<td>전중후 그림풍</td>
+<td>크림 바탕 · 먹선 · 어긋난 분홍 그림자 · 손글씨 · 도우미 "나무" · 튕기는 카드와 떨어지는 핀</td>
+</tr>
+</tbody>
+</table></div>
+<h3>하지 않는 것 (비목표)</h3>
+<ul>
+<li>임금 결제 · 정산, 근로계약서, 출역(출근) 확인, 평가 · 별점, 앱 안 대화 — 연락은 전화로 한다</li>
+<li>본인 확인 · 자격증 확인 — 등급은 스스로 고른다 (13절 D2)</li>
+<li>서버 — 1단계는 자료가 그 휴대폰 안에만 있다 (10절)</li>
+</ul>
+<h2 id="s3">3. 사용자</h2>
+<p>가입할 때 둘 중 하나를 고른다. 가입 항목은 이름(상호) · 휴대폰 번호 · 유형 · 비밀번호 네 가지 (나무장터와 같다).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>유형</th>
+<th>누구</th>
+<th>할 수 있는 일</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>일하는 사람</strong></td>
+<td>현장에서 일할 사람</td>
+<td>일손 카드 1장 만들기, 현장에 지원, 받은 제안에 답하기</td>
+</tr>
+<tr>
+<td><strong>현장</strong></td>
+<td>사람을 구하는 업체 · 반장 · 개인</td>
+<td>현장 올리기(여러 곳), 지원자 수락 · 거절, 사람에게 일 제안</td>
+</tr>
+</tbody>
+</table></div>
+<p>구경(지도 · 목록 · 상세)은 로그인 없이 된다. 올리기 · 지원 · 제안을 할 때 로그인한다.<br>
+관리자 계정(<code>admin</code> / <code>admin</code>)은 두 가지를 다 할 수 있어, 한 휴대폰에서 양쪽 흐름을 다 확인할 수 있다.</p>
+<h2 id="s4">4. 등급</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>등급</th>
+<th>색</th>
+<th>표시</th>
+<th>기준 (가정, D2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>고급</strong></td>
+<td>겨자 <code>#e9a93b<span class="ml-1 d-inline-block border circle color-border-subtle" style="background-color: #e9a93b; height: 8px; width: 8px;"></span></code></td>
+<td>별 3개 메달</td>
+<td>혼자 맡아 끝내고 다른 사람을 이끌 수 있다 (기능공 · 반장급)</td>
+</tr>
+<tr>
+<td><strong>중급</strong></td>
+<td>산호 <code>#e8737c<span class="ml-1 d-inline-block border circle color-border-subtle" style="background-color: #e8737c; height: 8px; width: 8px;"></span></code></td>
+<td>별 2개 메달</td>
+<td>지시를 받으면 혼자 작업한다</td>
+</tr>
+<tr>
+<td><strong>하급</strong></td>
+<td>초록 <code>#58a56f<span class="ml-1 d-inline-block border circle color-border-subtle" style="background-color: #58a56f; height: 8px; width: 8px;"></span></code></td>
+<td>별 1개 메달</td>
+<td>보조 · 처음 하는 사람</td>
+</tr>
+</tbody>
+</table></div>
+<p>전중후의 단계 색 3개(전 · 중 · 후)를 등급 색으로 그대로 쓴다. 등급 이름과 기준 문구는 <code>app/src/lib/grade.ts</code> 한 곳에만 있어, 바꾸면 화면 전체가 바뀐다.</p>
+<h2 id="s5">5. 올리는 것</h2>
+<h3>5-1. 현장 (현장 유형이 올린다)</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>항목</th>
+<th align="center">필수</th>
+<th>입력 방식</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>현장 이름</td>
+<td align="center">●</td>
+<td>글 (예: "○○아파트 조경 식재")</td>
+</tr>
+<tr>
+<td>직종</td>
+<td align="center">●</td>
+<td>8개 중 하나 고르기 (5-3)</td>
+</tr>
+<tr>
+<td>위치</td>
+<td align="center">●</td>
+<td>작은 지도를 움직여 가운데 핀에 맞추기, 또는 <code>내 위치</code></td>
+</tr>
+<tr>
+<td>작업일</td>
+<td align="center">●</td>
+<td>시작일 ~ 끝일 (기본값: 내일 하루)</td>
+</tr>
+<tr>
+<td><strong>등급별 구하는 인원</strong></td>
+<td align="center">●</td>
+<td>고급 · 중급 · 하급 줄마다 <code>−</code> <code>+</code> 로 0~99명. 세 줄 합이 1명 이상</td>
+</tr>
+<tr>
+<td><strong>등급별 단가</strong></td>
+<td align="center">●</td>
+<td>인원이 1명 이상인 줄만. 일당(원/일), 만 원 단위로 적는다</td>
+</tr>
+<tr>
+<td>한 줄 메모</td>
+<td align="center"></td>
+<td>60자 (예: "점심 제공, 07시 집결")</td>
+</tr>
+</tbody>
+</table></div>
+<h3>5-2. 일손 카드 (일하는 사람이 만든다, 한 사람에 한 장)</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>항목</th>
+<th align="center">필수</th>
+<th>입력 방식</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>이름</td>
+<td align="center">●</td>
+<td>가입한 이름이 들어간다</td>
+</tr>
+<tr>
+<td><strong>등급</strong></td>
+<td align="center">●</td>
+<td>고급 · 중급 · 하급 중 하나</td>
+</tr>
+<tr>
+<td>직종</td>
+<td align="center">●</td>
+<td>8개 중 1~3개</td>
+</tr>
+<tr>
+<td><strong>대략적인 위치</strong></td>
+<td align="center">●</td>
+<td>작은 지도 또는 <code>내 위치</code>. <strong>약 1km 단위로 뭉개서 저장</strong>한다 (집 위치가 그대로 드러나지 않게)</td>
+</tr>
+<tr>
+<td>경력</td>
+<td align="center"></td>
+<td>년 수</td>
+</tr>
+<tr>
+<td>한 줄 소개</td>
+<td align="center"></td>
+<td>60자</td>
+</tr>
+<tr>
+<td>일 구하는 중</td>
+<td align="center"></td>
+<td>켜고 끄기. 끄면 <code>사람 찾기</code>에 나오지 않는다</td>
+</tr>
+</tbody>
+</table></div>
+<h3>5-3. 직종 (8개)</h3>
+<p>보통인부 · 조경 · 목공 · 철근 · 미장/타일 · 전기/설비 · 도장 · 철거/정리</p>
+<p>직종마다 일하는 사람 그림이 한 장씩 있어 카드의 왼쪽 그림으로 쓴다.</p>
+<h2 id="s6">6. 찾기 규칙</h2>
+<p>설정 화면 없이 고정 규칙 하나다. 나무장터처럼 점수를 매기지 않고 <strong>거리만</strong> 쓴다 (사람 일은 가까운 것이 먼저다).</p>
+<ol>
+<li><strong>기준점</strong>: 앱을 열면 내 위치를 묻고 그곳을 기준점으로 한다. 허용하지 않으면 서울 시청에서 시작한다. 지도의 빈 곳을 누르면 그 자리가 기준점이 된다.</li>
+<li><strong>반경</strong>: 5 · 10 · 20 · 50km 중 고른다 (기본 20km — 시골에서도 첫 화면이 비지 않게). 반경 단추는 지도 오른쪽 아래에 있다.</li>
+<li>반경 안의 것만, <strong>가까운 순</strong>으로 지도 핀과 목록에 보인다.</li>
+<li>거르기: 등급(전체 / 고급 / 중급 / 하급), 직종.</li>
+</ol>
+<h3>현장 찾기에서 "나와 맞는지"</h3>
+<p>일손 카드가 있는 사람에게는 현장마다 표시가 붙는다.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>표시</th>
+<th>조건</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>딱 맞아요</code></td>
+<td>내 등급을 구하고 자리가 남았고, 직종도 같다</td>
+</tr>
+<tr>
+<td><code>내 등급 모집 중</code></td>
+<td>내 등급을 구하고 자리가 남았다</td>
+</tr>
+<tr>
+<td><code>내 등급 마감</code></td>
+<td>내 등급을 구했지만 자리가 다 찼다</td>
+</tr>
+<tr>
+<td>(표시 없음)</td>
+<td>내 등급은 구하지 않는다</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>남은 자리</strong> = 그 등급의 구하는 인원 − 수락된 사람 수.<br>
+작업 끝일이 지난 현장과 마감한 현장은 목록에서 빠진다.</p>
+<h2 id="s7">7. 지원과 제안</h2>
+<p>한 가지 자료(이음, Link)로 양쪽을 다 다룬다.</p>
+<pre><code>[사람 → 현장]  지원하기 ──▶ (대기) ──▶ 현장이 수락 ──▶ (성사)  남은 자리 −1, 서로 전화번호 보임
+                                   └─▶ 현장이 거절 ──▶ (거절)
+[현장 → 사람]  일 제안하기 ─▶ (대기) ──▶ 사람이 수락 ──▶ (성사)
+                                   └─▶ 사람이 거절 ──▶ (거절)
+대기 중인 것은 보낸 쪽이 취소할 수 있다.
+</code></pre>
+<p>규칙:</p>
+<ul>
+<li>사람은 <strong>자기 등급 자리에만</strong> 지원한다 (그래서 지원은 단추 한 번이다). 다른 등급 자리 지원은 D3</li>
+<li>남은 자리가 0이면 지원 · 제안 · 수락이 안 된다</li>
+<li>같은 사람 · 같은 현장에는 이음이 하나만 있다</li>
+<li>현장이 제안할 때는 "그 사람 등급을 구하고 자리가 남은 내 현장" 중에서 고른다</li>
+<li>전화번호는 <strong>성사된 뒤에만</strong> 서로에게 보인다</li>
+</ul>
+<h2 id="s8">8. 화면 구성</h2>
+<p>지도와 목록이 한 화면에 같이 있다. 나머지는 아래에서 올라오는 판이다.</p>
+<pre><code>① 첫 화면            ② 찾기 (주 화면)              ③ 현장 상세 (판)           ④ 현장 올리기 (판)
+┌──────────┐      ┌────────────────────┐      ┌──────────────────┐      ┌──────────────────┐
+│ 일손이음  │      │ 일손이음        (나) │      │ ○○아파트 조경 식재  │      │ 현장 이름 [      ] │
+│ 가까운    │      │ [현장 찾기|사람 찾기] │      │ 양평군 · 3.2km      │      │ 직종 (그림 8개)    │
+│ 현장과 사람│      ├────────────────────┤      │ 11/20~11/22        │      │ 위치 [작은 지도]   │
+│ (삽화)   │      │      (손그림 지도)    │      ├──────┬────┬────┬──┤      │ 작업일 [  ]~[  ]  │
+│  나무 👋 │      │   📍   ◎   🧑       │      │ 등급  │구함│남음│단가│      ├──────────────────┤
+│          │      │      ╌╌반경╌╌   [◎] │      │ ★★★고│ 2 │ 1 │25만│      │ ★★★ 고급 −2+ 25만│
+│ [시작하기]│      ├────────────────────┤      │ ★★ 중│ 3 │ 3 │18만│◀내  │ ★★  중급 −3+ 18만│
+└──────────┘      │ 🤖 "10km 안에 12곳!" │      │ ★  하│ 0 │ – │ – │      │ ★   하급 −0+  –  │
+                  │ 반경 5 [10] 20 50km  │      ├──────────────────┤      ├──────────────────┤
+                  │ 전체 고급 중급 하급 직종│      │  [ 중급으로 지원하기 ] │      │   [ 현장 올리기 ]  │
+                  │ ┌────────────────┐ │      └──────────────────┘      └──────────────────┘
+                  │ │🧑‍🌾 ○○아파트 조경  │ │
+                  │ │ 3.2km · 11/20~  │ │      ⑤ 사람 상세 · ⑥ 일손 카드 만들기 · ⑦ 내 것 · ⑧ 가입/로그인 (모두 판)
+                  │ │ 고2·25만 중3·18만│ │
+                  │ └────────────────┘ │
+                  │              [ + ] │
+                  └────────────────────┘
+</code></pre>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>번호</th>
+<th>화면</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>①</td>
+<td>첫 화면</td>
+<td>제목 글자 팝, 도우미 인사, 시작하기. 처음 한 번만</td>
+</tr>
+<tr>
+<td>②</td>
+<td>찾기</td>
+<td>현장 찾기 ↔ 사람 찾기 전환, 손그림 지도(핀 · 기준점 · 반경 원), 도우미 한마디, 반경 · 등급 · 직종 거르기, 카드 목록, <code>+</code> 단추</td>
+</tr>
+<tr>
+<td>③</td>
+<td>현장 상세</td>
+<td>등급별 모집표(구하는 인원 · 남은 자리 · 단가), 지원하기. 주인에게는 지원자 목록과 수락 · 거절 · 마감</td>
+</tr>
+<tr>
+<td>④</td>
+<td>현장 올리기</td>
+<td>5-1의 항목. 한 화면에서 끝난다</td>
+</tr>
+<tr>
+<td>⑤</td>
+<td>사람 상세</td>
+<td>등급 메달, 직종, 경력, 소개. 현장 주인에게는 <code>일 제안하기</code></td>
+</tr>
+<tr>
+<td>⑥</td>
+<td>일손 카드</td>
+<td>5-2의 항목</td>
+</tr>
+<tr>
+<td>⑦</td>
+<td>내 것</td>
+<td>사람: 내 카드 · 지원한 곳 · 받은 제안. 현장: 내 현장들 · 대기 중인 지원자 수 · 보낸 제안. 로그아웃</td>
+</tr>
+<tr>
+<td>⑧</td>
+<td>가입 · 로그인</td>
+<td>항목 4개</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="s9">9. 디자인과 움직임 — 전중후 그림풍</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>요소</th>
+<th>전중후에서</th>
+<th>일손이음에서</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>바탕 · 선</td>
+<td>크림 <code>#faf9f5<span class="ml-1 d-inline-block border circle color-border-subtle" style="background-color: #faf9f5; height: 8px; width: 8px;"></span></code>, 먹선 <code>#2c2a29<span class="ml-1 d-inline-block border circle color-border-subtle" style="background-color: #2c2a29; height: 8px; width: 8px;"></span></code> 2.5px</td>
+<td>그대로</td>
+</tr>
+<tr>
+<td>그림자</td>
+<td>오른쪽 아래로 어긋난 분홍 그림자</td>
+<td>카드 · 단추 · 판 모두</td>
+</tr>
+<tr>
+<td>포인트 색</td>
+<td>전 겨자 · 중 산호 · 후 초록</td>
+<td>고급 겨자 · 중급 산호 · 하급 초록</td>
+</tr>
+<tr>
+<td>글씨</td>
+<td>제목 Jua, 말풍선 Gaegu, 작은 글씨 기기 고딕</td>
+<td>그대로. <strong>지도 지명도 Gaegu 손글씨</strong></td>
+</tr>
+<tr>
+<td>도우미</td>
+<td>로봇 "나무" (안전모 · 새싹 · 목수건)</td>
+<td>같은 캐릭터. 지도 아래에서 한마디씩 한다 ("10km 안에 현장 12곳이 있어요")</td>
+</tr>
+<tr>
+<td>선 떨림</td>
+<td>1/8초마다 다시 그린 듯한 떨림</td>
+<td>제목 · 말풍선 · 전환 단추에 같은 필터</td>
+</tr>
+<tr>
+<td>제목</td>
+<td>글자가 하나씩 튀어나옴</td>
+<td>"일손이음" 네 글자</td>
+</tr>
+<tr>
+<td>카드</td>
+<td>기울어진 채 들어와 튕기며 멈춤</td>
+<td>목록 카드, 판</td>
+</tr>
+<tr>
+<td>낙하</td>
+<td>핀이 떨어져 꽂히고 한 번 튐</td>
+<td>지도 핀이 가까운 순으로 떨어진다</td>
+</tr>
+<tr>
+<td>완료</td>
+<td>종이 꽃가루 + 차임</td>
+<td>지원 · 성사 순간</td>
+</tr>
+</tbody>
+</table></div>
+<h3>지도</h3>
+<p>MapLibre + OpenFreeMap (나무장터와 같다. 키 · 요금 없음). 지도 색을 전중후 팔레트로 다시 칠한다:<br>
+땅은 크림, 물은 하늘색, 공원은 연초록, 길은 흰 바탕에 옅은 먹선, 건물 · 표지는 뺀다.<br>
+기준점 둘레의 반경은 <strong>먹 점선 원 + 옅은 분홍 채움</strong>으로 그린다.</p>
+<h3>그림 재료 — ChatGPT 이미지</h3>
+<p>프롬프트와 원본은 <code>design/gpt/</code>. 전중후의 시안과 아이콘 시트를 참조 그림으로 붙여 같은 화풍으로 뽑는다.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>재료</th>
+<th>내용</th>
+<th>쓰는 곳</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>핀 · 메달 8개</td>
+<td>현장 핀(안전콘) · 사람 핀 3색(고급 · 중급 · 하급) · 등급 메달 3개(별 3 · 2 · 1) · 기준점 과녁</td>
+<td>지도, 등급 표시</td>
+</tr>
+<tr>
+<td>아이콘 8개</td>
+<td>악수 · 지원서 · 전화 · 돈 · 달력 · 확성기 · 돋보기 · 안전모 3색</td>
+<td>단추, 상세, 빈 화면</td>
+</tr>
+<tr>
+<td>직종별 일하는 사람 8명</td>
+<td>보통인부 · 조경 · 목공 · 철근 · 미장 · 전기 · 도장 · 철거</td>
+<td>카드 그림, 직종 고르기</td>
+</tr>
+<tr>
+<td>첫 화면 삽화</td>
+<td>작은 동네 그림 지도: 공사 중인 건물 · 나무 심는 공원 · 핀 · 걸어가는 일꾼들</td>
+<td>첫 화면</td>
+</tr>
+<tr>
+<td>도우미 "나무"</td>
+<td>전중후의 것을 그대로 쓴다 (인사 · 가리키기 · 생각 · 만세 · 걷기 · 듣기)</td>
+<td>첫 화면, 한마디, 빈 화면, 완료</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="s10">10. 자료와 저장</h2>
+<pre><code>사용자 User   { id, 이름, 휴대폰, 유형(일하는 사람|현장), 비밀번호 해시 }
+현장 Site     { id, 주인, 이름, 직종, 위도, 경도, 동네 이름, 시작일, 끝일,
+                needs: { 고급: {인원, 단가}, 중급: {…}, 하급: {…} }, 메모, 상태(모집|마감) }
+일손 Worker   { id, 주인, 이름, 등급, 직종[1~3], 위도, 경도(약 1km로 뭉갬), 동네 이름, 경력, 소개, 구직 중 }
+이음 Link     { id, 현장, 사람, 등급, 보낸 쪽(사람|현장), 상태(대기|성사|거절), 시각 }
+</code></pre>
+<ul>
+<li><strong>1단계 (이번)</strong>: 서버 없음. 가입한 계정과 올린 것은 그 브라우저의 저장소에만 남는다. 다른 휴대폰에서는 보이지 않는다.</li>
+<li>그래서 지도가 비지 않도록 <strong>예시 자료</strong>(전국 시 · 군 · 구에 흩어 놓은 현장 약 370곳, 일손 약 750명)를 넣고 "예시" 딱지를 붙인다. 예시 현장에도 지원해 볼 수 있지만 답은 오지 않는다 (화면에 그렇게 적는다). 예시에는 전화번호가 없다.</li>
+<li><strong>2단계</strong>: 서버(Supabase 등)를 붙이면 <code>app/src/lib/store.ts</code> 만 바꾼다. 그때 관리자 계정을 반드시 바꾼다.</li>
+<li>동네 이름은 시 · 군 · 구 중심 좌표 250곳(나무장터의 <code>regions.json</code>) 중 가장 가까운 곳으로 붙인다 ("경기 양평군 부근"). 주소 검색 서비스가 필요 없다.</li>
+</ul>
+<h2 id="s11">11. 기술 선택</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>영역</th>
+<th>선택</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>앱</td>
+<td>Vite + React + TypeScript</td>
+<td>나무장터 · 전중후와 같은 묶음</td>
+</tr>
+<tr>
+<td>지도</td>
+<td>MapLibre GL JS + OpenFreeMap</td>
+<td>나무장터와 같다. 지도 색 · 글씨를 바꿀 수 있다</td>
+</tr>
+<tr>
+<td>움직임</td>
+<td>motion + CSS</td>
+<td>카드 · 판 · 핀 낙하</td>
+</tr>
+<tr>
+<td>저장</td>
+<td>브라우저 저장소</td>
+<td>1단계. <code>store.ts</code> 만 갈아 끼우면 서버로 간다</td>
+</tr>
+<tr>
+<td>서체</td>
+<td>Jua · Gaegu (앱에 넣음)</td>
+<td>전중후와 같다</td>
+</tr>
+<tr>
+<td>시험</td>
+<td>vitest (찾기 · 지원 규칙), playwright-core 헤드리스 크롬 (처음부터 끝까지)</td>
+<td>전중후와 같다</td>
+</tr>
+</tbody>
+</table></div>
+<p>지도 타일은 인터넷이 있어야 나온다 (전중후와 달리 인터넷 없이 쓰는 앱이 아니다). 지도가 안 나와도 목록 · 상세 · 지원은 된다.</p>
+<h2 id="s12">12. 리스크</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>리스크</th>
+<th>영향</th>
+<th>대응</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>서버가 없어 실제 중개가 안 된다</td>
+<td>다른 휴대폰끼리 못 만난다</td>
+<td>1단계는 화면 · 흐름 확정용. 2단계에서 서버</td>
+</tr>
+<tr>
+<td>집 위치가 드러난다</td>
+<td>사생활</td>
+<td>일손 카드 위치를 약 1km로 뭉개 저장. 전화번호는 성사 뒤에만</td>
+</tr>
+<tr>
+<td>등급을 부풀려 고른다</td>
+<td>현장의 신뢰</td>
+<td>1단계는 스스로 고름. 뒤에 현장 평가 · 자격 확인을 붙일 자리 (D2)</td>
+</tr>
+<tr>
+<td><strong>법 · 제도</strong></td>
+<td>운영 형태에 따라 직업안정법의 직업소개사업 등록이나 직업정보제공사업 신고가 필요할 수 있다</td>
+<td><strong>서버를 붙여 공개하기 전에 확인한다.</strong> 1단계(기기 안 시험)는 해당 없음</td>
+</tr>
+<tr>
+<td>지도 서버(OpenFreeMap)가 느리거나 멎는다</td>
+<td>지도가 안 나옴</td>
+<td>목록만으로 다 되게. 필요하면 브이월드 · 카카오맵으로 교체</td>
+</tr>
+<tr>
+<td>핀이 너무 많다</td>
+<td>느려지고 겹쳐서 안 보임</td>
+<td>지도 핀은 가까운 40개까지만. 목록은 다 보인다. <code>지도 크게</code> 단추로 지도를 넓혀 볼 수 있다</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="s13">13. 아직 정하지 않은 것</h2>
+<p>기본값으로 만들었다. 바꾸고 싶으면 알려 주면 된다.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>항목</th>
+<th>기본값</th>
+<th>다른 선택</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D1</td>
+<td>앱 이름</td>
+<td>일손이음</td>
+<td>일손장터, 현장이음, …</td>
+</tr>
+<tr>
+<td>D2</td>
+<td>등급 이름과 정하는 방법</td>
+<td>고급 · 중급 · 하급, 스스로 고름</td>
+<td>현장 용어(기공 · 준기공 · 조공)로 표기 / 현장이 평가해 올림</td>
+</tr>
+<tr>
+<td>D3</td>
+<td>다른 등급 자리 지원</td>
+<td>자기 등급 자리만</td>
+<td>높은 등급이 낮은 자리에 지원 가능 (단가는 그 자리 단가)</td>
+</tr>
+<tr>
+<td>D4</td>
+<td>단가 단위</td>
+<td>일당 (원/일)</td>
+<td>시급, 건당</td>
+</tr>
+<tr>
+<td>D5</td>
+<td>직종 목록</td>
+<td>8개 (5-3)</td>
+<td>조경 쪽만 더 잘게 (예초 · 전정 · 식재 …)</td>
+</tr>
+<tr>
+<td>D6</td>
+<td>예시 자료</td>
+<td>넣음 ("예시" 표시)</td>
+<td>빼고 빈 지도로 시작</td>
+</tr>
+<tr>
+<td>D7</td>
+<td>APK로 감싸기 · 공개 주소에 올리기</td>
+<td>아직 안 함</td>
+<td>전중후처럼 Capacitor APK, GitHub Pages</td>
+</tr>
+<tr>
+<td>D8</td>
+<td>서버 연결</td>
+<td>안 함</td>
+<td>Supabase 등</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="s14">변경 이력</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>날짜</th>
+<th>버전</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-11-19</td>
+<td>v0.2</td>
+<td>1차 구현을 하며 바뀐 것: 기본 반경 10 → 20km, 지도 핀 60 → 40개, 반경 고르기를 거르기 줄에서 지도 위로 옮김(폭 360 휴대폰에서 거르기 줄이 한 줄에 들어오게), <code>지도 크게</code> 단추 추가</td>
+</tr>
+<tr>
+<td>2026-11-19</td>
+<td>v0.1</td>
+<td>첫 작성. 사용자 요청: 나무장터와 같은 원리(대략적 위치 → 근처 목록), 사람 등급 고급 · 중급 · 하급, 현장은 등급별 인원과 단가, 근처 현장을 찾아 지원, 반대로 현장 중심으로도. 그림풍은 전중후</td>
+</tr>
+</tbody>
+</table></div>
+        </article>
+      </main>
+
+      <footer>
+        <a href="../../download/">앱 받기 페이지로</a>
+        <p>일손이음 기획서 v0.2 · 2026-11-19</p>
+      </footer>
+    </div>
+  </body>
+</html>
